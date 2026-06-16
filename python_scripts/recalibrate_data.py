@@ -20,7 +20,9 @@ Pipeline Processing Logic:
 
 Requirements:
   - Input Directory: './participant-data/' (containing individual participant subfolders)
-  - Output Directory: './recalibrated_data_moving/' (for recal.csv files and error_df.csv)
+  - Output Directory: 
+        './recalibrated_data/moving_target/' (for type 'moving' and calibrated with task 'cal')
+        './recalibrated_data_others/<calibration_task>/moving_target/' (for type 'moving' and calibrated with task other than'cal')
   - Custom Module: 'utils.util' (containing clean_df, shifted_df, regression_models, etc.)
 
 Author: Satyam Awasthi
