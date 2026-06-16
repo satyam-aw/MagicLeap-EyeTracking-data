@@ -90,9 +90,9 @@ Compares eye-tracking vector accuracy when interacting with stationary versus mo
 #### 2. Dynamic Spatial Gaze Playback (`gaze_data_playback.ipynb`)
 Integrates a highly optimized, vectorized string parser to transform structural text data into 2D coordinate spaces. Builds high-efficiency animation arrays tracking gaze, eye position, and targets over time.
 <p align="center">
-  <img src="jupyter_notebooks/documentation/gaze_data_playback.webp" alt="Gaze Trajectory Playback Clip" width="50%">
+  <img src="jupyter_notebooks/documentation/gaze_data_playback.webp" alt="Gaze Trajectory Playback Clip" width="80%">
   <br>
-  <em>Clip 1: Animated 1:1 scale scatter rendering of real-time head-vector, eye, target, and computed gaze tracking positions.</em>
+  <em>Clip 1: Animated scatter rendering of real-time head-vector, eye, target, and computed gaze tracking positions.</em>
 </p>
 
 #### 3. Calibration Efficiency & Coordination Analysis (`error_plots.ipynb`)

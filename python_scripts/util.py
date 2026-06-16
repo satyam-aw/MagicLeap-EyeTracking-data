@@ -280,7 +280,7 @@ def generate_recalibrated_file(raw_file_path, recal_file_path, x_regr, y_regr, r
         "PathIDX",
         # "timestamp",
         "seconds",
-        "gaze_confidence",
+        # "gaze_confidence",
         # "gaze_pos",
         # "target_pos",
         "gaze_vector",
