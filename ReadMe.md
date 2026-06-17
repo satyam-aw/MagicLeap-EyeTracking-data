@@ -65,9 +65,9 @@ Our cross-notebook analysis reveals distinct tracking performance variations dri
     *   **Baseline Fixation** (Rapid Calibration): Degrades to **1.33°**.
     *   **Saccades** (Rapid Calibration): Worst tracking degradation (**1.98°**). These ballistic, jerky eye jumps outpace hardware sampling loops and suffer from physical micro-overshoots before settling on a target *(Purves et al., 2001)*.
 *   **Performance Bottlenecks & Causes**: 
-    *   *Hardware Lag:* A 60Hz sampling rate introduces up to 30 frames of display pipeline latency. While cross-correlation optimizes this down to a **9-frame shift**, fast movements outpace the streaming pipeline.
-    *   *Algorithmic Drag:* System smoothing filters successfully follow predictable *Smooth Pursuits* but create coordinate "drag" and spatial overshoots during abrupt *Saccades*.
-    *   *Foveation Settling:* Rapid calibration jumps capture natural micro-saccadic tremors and human eye settling time upon landing on a new target, artificially inflating baseline errors.
+    *   *Signal Latency:* An inherent **9-frame** average lag (~150 ms) exists between the user's actual gaze and the moving target they follow, representing the combined human reaction time and the eye-tracking hardware-to-software pipeline delay.
+    *   *Algorithmic Drag:* System smoothing filters successfully follow predictable *Smooth Pursuits* but create coordinate "drag" and spatial overshoots during abrupt *Saccades*. *Note: This software-level noise issue aligns with findings by Caruso et al. (2021) on the Magic Leap One, where developers had to explicitly adjust the gaze-tracking threshold within the CHARM simulator software to drop system noise and capture rapid saccadic jumps accurately.*
+    * *Foveation Settling:* Rapid Calibration task "jumps" capture natural micro-saccadic tremors and human eye settling time upon landing on new, randomized target locations. Because the eye requires stabilization time after a ballistic saccade, these physiological corrections artificially inflate baseline fixation errors compared to the uniform, constant motion of the Continuous Tracking task.
 
 
 
@@ -76,8 +76,6 @@ Our cross-notebook analysis reveals distinct tracking performance variations dri
 ## Notebook & Script Matrix
 
 ### Core Analysis Notebooks
-
-Please visit the 
 
 #### 1. Static vs. Moving Stimulus Error Analysis (`comparing_static_moving.ipynb`)
 Compares eye-tracking vector accuracy when interacting with stationary versus moving targets across multiple physical stabilization coordinate spaces (`w1`–`b5`). Uses 95% confidence intervals to evaluate precision variance.
@@ -129,6 +127,7 @@ Handles dataset outlier management via winsorization and filters tracking drops.
   <br>
   <em>Figure 4: Cross-correlation coordinate time-series showing signal offset alignment before and after lag correction.</em>
 </p>
+<br>
 
 ### Automation Scripts
 * **`python_scripts/recalibrate_data.py`**: A fully automated pipeline tool that fits individualized linear regression drift parameters per participant. It applies high-speed matrix calculations to correct gaze positions across tasks and writes outputs systematically to local datastores.
@@ -150,28 +149,29 @@ python python_scripts/recalibrate_data.py --type static --with w1
 
 ---
 
-## Referenced Poster Papers
+## Refereed Poster Papers
 
 This module forms the analytical foundation of, and directly links to, the engineering evaluations presented in the following peer-reviewed IEEE research contributions:
 
 ```bibtex
 @inproceedings{vrw2024eyetracking,
-  author    = {IEEE VRW Committee},
+  author    = {Awasthi, Satyam and Ross, Vivian and Lim, Sydney and Beyeler, Michael and Höllerer, Tobias},
   title     = {Eye Tracking Performance in Mobile Mixed Reality},
   booktitle = {2024 IEEE Conference on Virtual Reality and 3D User Interfaces Abstracts and Workshops (VRW)},
   year      = {2024},
-  pages     = {321-322},
+  pages     = {321--322},
   doi       = {10.1109/vrw62533.2024.00321}
 }
 
 @inproceedings{ismar2023eyetts,
-  author    = {IEEE ISMAR-Adjunct Committee},
+  author    = {Awasthi, Satyam and Ross, Vivian and Beyeler, Michael and Höllerer, Tobias},
   title     = {EyeTTS: Evaluating and Calibrating Eye Tracking for Mixed-Reality Locomotion},
   booktitle = {2023 IEEE International Symposium on Mixed and Augmented Reality Adjunct (ISMAR-Adjunct)},
   year      = {2023},
-  pages     = {104-105},
+  pages     = {104--105},
   doi       = {10.1109/ismar-adjunct60411.2023.00104}
 }
 ```
+
 
 ---
