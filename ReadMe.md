@@ -21,6 +21,9 @@ The EyeTTS framework is split into two halves: device-specific deployment enviro
 
 The peer-reviewed [poster](jupyter_notebooks/documentation/IEEEVR-2024-Poster-A0.pdf) presented on this work from **IEEE VR 24** can be referenced at the official [IEEE Xplore Library](https://doi.org/10.1109/VRW62533.2024.00321).
 
+
+The [EyeTTS User Study Framework Playlist](https://www.youtube.com/playlist?list=PLQbqwztmTvAVAUClXj-sOkpQ9sBJbT5pG) documents each standalone tracking task as well as a continuous, unedited trial run of a study participant.
+
 ---
 
 ## Directory Structure
