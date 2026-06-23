@@ -1,53 +1,83 @@
-# Eye Tracking Test Suite (EyeTTS) - Data Module
+# EyeTTS Calibration Framework
 
-This repository provides an optimized, end-to-end data processing, post-hoc recalibration, and statistical evaluation pipeline for mixed-reality eye-tracking datasets. It serves as the **analytical back-end foundation** for the **EyeTTS framework**.
+This repository provides the **post-hoc calibration, signal processing, and evaluation backend** for the Eye Tracking Test Suite (EyeTTS), a mixed-reality eye-tracking research system for analyzing gaze behavior under dynamic locomotion conditions.
 
-### System Architecture: User Study Framework vs. Data Module
-The EyeTTS framework is split into two halves: device-specific deployment environments that run on the hardware in real-time, and a centralized Python processing suite that analyzes the outputs post-hoc.
+The framework enables:
+- Multi-device eye-tracking data ingestion and synchronization  
+- Drift-aware calibration and coordinate correction  
+- Behavioral segmentation of eye movement patterns  
+- Statistical evaluation of gaze precision under locomotion  
+- Reproducible analysis pipelines for mixed-reality user studies  
 
-1. **Front-End User Study Framework (Data Collection):** These are the interactive, Unity-based mixed reality testing environments that human participants wear and interact with during empirical testing. The framework projects spatial targets, captures raw gaze vectors, and manages the user study tasks engineered to evaluate specific frame-of-reference conditions:
-   *   **`w1` (World-Stabilized):** User head-constrained / world-stabilized target frame.
-   *   **`w2` (World-Stabilized):** User body-constrained / world-stabilized target frame.
-   *   **`w3` (World-Stabilized):** User actively walking / world-stabilized target frame.
-   *   **`s4` (Screen-Stabilized):** User actively walking / screen-stabilized target frame.
-   *   **`b5` (Body-Stabilized):** User actively walking / body-stabilized target frame.
+It serves as the **analytical backend** supporting the EyeTTS data collection environments and associated peer-reviewed publications.
 
-   Because different headsets require distinct software setups and tracking SDKs, this deployment framework is split across three device-specific repositories:
-   * **Magic Leap 1 Environment:** [satyam-aw/MagicLeap-EyeTracking](https://github.com/satyam-aw/MagicLeap-EyeTracking)
-   * **Meta Quest Pro Environment:** [sydneylim/QuestPro_EyeTracking](https://github.com/sydneylim/QuestPro_EyeTracking)
-   * **HoloLens 2 Environment:** [vivianross06/HoloLens-Eye-Tracking](https://github.com/vivianross06/HoloLens-Eye-Tracking)
+---
 
-2. **Back-End Data Module (This Repository):** This component acts as the receiver pipeline. It ingests the raw tracking logs generated during the execution of the tasks above to filter signals, eliminate spatial alignment drift, calculate metrics, and evaluate latency.
+## System Architecture
 
-The peer-reviewed [poster](jupyter_notebooks/documentation/IEEEVR-2024-Poster-A0.pdf) presented on this work from **IEEE VR 24** can be referenced at the official [IEEE Xplore Library](https://doi.org/10.1109/VRW62533.2024.00321).
+EyeTTS is designed as a two-part research system:
 
+### 1. Data Collection Layer (User Study Framework)
 
-The [EyeTTS User Study Framework Playlist](https://www.youtube.com/playlist?list=PLQbqwztmTvAVAUClXj-sOkpQ9sBJbT5pG) documents each standalone tracking task as well as a continuous, unedited trial run of a study participant.
+Real-time mixed-reality environments deployed across AR/VR headsets generate synchronized gaze, head pose, and task interaction data during controlled experimental conditions.
+
+Each experimental condition evaluates a different spatial reference frame:
+
+- **w1, w2, w3** → World-stabilized tracking under varying locomotion states  
+- **s4** → Screen-stabilized tracking condition  
+- **b5** → Body-stabilized tracking condition  
+
+Because each headset requires different SDKs and deployment configurations, the data collection layer is distributed across device-specific implementations:
+
+- Magic Leap 1: https://github.com/satyam-aw/MagicLeap-EyeTracking  
+- Meta Quest Pro: https://github.com/sydneylim/QuestPro_EyeTracking  
+- HoloLens 2: https://github.com/vivianross06/HoloLens-Eye-Tracking  
+
+These environments are responsible for:
+- Stimulus rendering in controlled spatial frames  
+- Gaze and head motion capture  
+- User study task execution  
+- Timestamped logging of interaction events  
+
+---
+
+### 2. Calibration & Analysis Backend (This Repository)
+
+This repository processes raw logs generated during user studies and performs:
+
+- Temporal synchronization and lag correction  
+- Coordinate system recalibration using statistical models  
+- Drift estimation and compensation  
+- Gaze error computation and spatial accuracy analysis  
+- Behavioral segmentation of eye movement patterns  
+- Cross-condition and cross-device evaluation  
 
 ---
 
 ## Directory Structure
 
 ```text
-├── jupyter_notebooks/                     
-│   ├── comparing_static_moving.ipynb      # Dynamic stimulus versus static baseline error analysis
-│   ├── error_plots.ipynb                  # Calibration efficiency evaluations & Type-II ANOVA models
-│   ├── gaze_data_playback.ipynb           # Optimized time-series vectorization & dynamic spatial playback
-│   ├── precision_correlation_x_y.ipynb    # Channel coupling evaluation & 60Hz hardware ISI auditing
-│   ├── precision_saccade_smooth_fixation.ipynb # Behavior-specific RMS error extraction loop
-│   ├── time_shift.ipynb                   # Signal latency alignment & transmission lag compensation
-│   └── csv/                               # Local storage for experimental data tracks
-|
-├── participant-data/                  # Raw per-participant tracking logs
-|
+├── jupyter_notebooks/
+│   ├── comparing_static_moving.ipynb
+│   ├── error_plots.ipynb
+│   ├── gaze_data_playback.ipynb
+│   ├── precision_correlation_x_y.ipynb
+│   ├── precision_saccade_smooth_fixation.ipynb
+│   ├── time_shift.ipynb
+│   └── csv/
+│
+├── participant-data/
+│   └── Raw per-participant tracking logs
+│
 ├── python_scripts/
-│   ├── recalibrate_data.py            # Automated pipeline script for calibration & coordinate correction
-│   └── util.py                        # Shared analytical subroutines (cleaning, linear regression, shifts)
-|
-├── recalibrated_data/                 # Outputs from baseline calibration runs ('cal' task)
+│   ├── recalibrate_data.py
+│   └── util.py
+│
+├── recalibrated_data/
 │   ├── moving_target/
 │   └── static_target/
-└── recalibrated_data_others/          # Cross-task calibration validation outputs
+│
+└── recalibrated_data_others/
     ├── b5/
     ├── s4/
     ├── w1/
@@ -57,7 +87,7 @@ The [EyeTTS User Study Framework Playlist](https://www.youtube.com/playlist?list
 
 ---
 
-## Key Findings & Statistical Summary
+## Key Findings (Experimental Summary)
 
 Our cross-notebook analysis reveals distinct tracking performance variations driven by target dynamics, behavioral states, and system latency:
 
@@ -175,6 +205,12 @@ This module forms the analytical foundation of, and directly links to, the engin
   doi       = {10.1109/ismar-adjunct60411.2023.00104}
 }
 ```
+## Supplementary Materials
 
+- The peer-reviewed poster associated with this work (IEEE VR 2024) is available via IEEE Xplore:  
+  https://doi.org/10.1109/vrw62533.2024.00321  
+
+- The EyeTTS User Study Framework playlist contains recorded experimental sessions, including task-specific trials and full unedited participant runs:  
+  https://www.youtube.com/playlist?list=PLQbqwztmTvAVAUClXj-sOkpQ9sBJbT5pG
 
 ---
